@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanshi Shah | Cardiac Stress Detection</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #fdf2f8; /* Soft pink */
+            --primary-color: #c026d3; /* Fuchsia */
+            --secondary-color: #a855f7; /* Purple */
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: #374151;
+            overflow-x: hidden;
+        }
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        #sparkle-canvas, #emoji-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
+        }
+        #emoji-container { z-index: -2; }
+        .floating-emoji {
+            position: absolute; font-size: 2rem; opacity: 0.15; animation: float-up 15s linear infinite;
+        }
+        @keyframes float-up {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .section-animate {
+            opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-animate.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+        .tech-tag {
+            background-color: #f3e8ff; /* Purple-100 */
+            color: #7e22ce; /* Purple-700 */
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+        }
+        pre[class*="language-"] {
+            border-radius: 1rem;
+            padding: 1.5rem;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="emoji-container"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <header class="bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-pacifico text-purple-600">Vanshi Shah</a>
+            <a href="electronics.html" class="font-bold text-lg bg-purple-100 text-purple-700 px-6 py-2 rounded-full hover:bg-purple-200 transition">
+                &larr; Back to Electronics
+            </a>
+        </nav>
+    </header>
+
+    <main class="py-16 px-6">
+        <section class="text-center mb-16 section-animate">
+            <h1 class="text-5xl md:text-6xl font-pacifico text-purple-600">Cardiac Stress Detection</h1>
+            <p class="mt-4 text-2xl font-pacifico text-gray-800 opacity-80">Using Multi-Modal Feature Fusion.</p>
+        </section>
+
+        <section class="container mx-auto mb-16 section-animate">
+            <div class="content-card p-8 md:p-12 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-4">The Challenge</h2>
+                <p class="text-gray-600">While traditional ECGs are powerful, their sensitivity can be limited when trying to detect the subtle, complex changes caused by psychological stress. To overcome this, this project explored a multi-modal fusion approach, integrating data from ECG, Heart Rate Variability (HRV), and Photoplethysmography (PPG) to create a more holistic and accurate assessment of cardiac stress.</p>
+            </div>
+        </section>
+
+        <section class="container mx-auto mb-16 grid md:grid-cols-2 gap-10 section-animate">
+            <div class="content-card p-8">
+                <h3 class="text-2xl font-bold mb-4">Methodology</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-3">
+                    <li>Developed a complete signal processing pipeline in MATLAB using both real and synthetic ECG data.</li>
+                    <li>Applied a 4th-order Butterworth bandpass filter to remove noise and isolate relevant frequency components.</li>
+                    <li>Implemented R-Peak detection using a `findpeaks()` algorithm to identify individual heartbeats.</li>
+                    <li>Calculated RR intervals and extracted key HRV metrics like SDNN, RMSSD, and the LF/HF ratio for stress classification.</li>
+                    <li>Utilized multi-modal fusion to combine the physiological markers from each signal, significantly enhancing sensitivity and reliability.</li>
+                </ul>
+            </div>
+            <div class="content-card p-8">
+                 <h3 class="text-2xl font-bold mb-4">Key Outcome</h3>
+                 <div class="text-center flex flex-col justify-center h-full">
+                    <p class="text-gray-600 mb-2">The multi-modal approach was a success, improving stress classification accuracy from:</p>
+                    <p class="text-5xl font-bold text-gray-400 my-2">~70%</p>
+                    <p class="text-xl font-bold text-gray-500 mb-2">(ECG-only)</p>
+                    <p class="text-4xl font-bold text-purple-600 my-4">&darr;</p>
+                    <p class="text-6xl font-bold text-fuchsia-600">Over 90%</p>
+                     <p class="text-xl font-bold text-gray-500 mt-2">(Multi-Modal Fusion)</p>
+                 </div>
+            </div>
+        </section>
+
+        <section class="container mx-auto mb-16 section-animate">
+             <h2 class="text-4xl font-pacifico text-center text-fuchsia-600 mb-12">MATLAB Analysis Code</h2>
+            <div class="content-card p-8 max-w-4xl mx-auto">
+                <div>
+                    <h3 class="font-bold text-xl mb-2">Signal Processing Snippet</h3>
+                    <pre><code class="language-matlab">% Generate or load ECG signal
+fs = 360; % Sampling rate
+[b, a] = butter(4, [0.5 40] / (fs/2), 'bandpass');
+filt_ecg = filtfilt(b, a, ecg_signal);
+
+% R-Peak Detection
+[pks, locs] = findpeaks(filt_ecg, 'MinPeakHeight', 0.8);
+
+% HRV Analysis
+rr_intervals = diff(locs) / fs;
+sdnn = std(rr_intervals) * 1000;
+rmssd = sqrt(mean(diff(rr_intervals).^2)) * 1000;
+
+% Frequency Domain
+f_interp = 250;
+t_interp = 0:1/f_interp:rr_time(end);
+rr_interp = interp1(rr_time, rr_intervals, t_interp, 'pchip');
+lf_power = bandpower(rr_interp, f_interp, [0.04 0.15]);
+hf_power = bandpower(rr_interp, f_interp, [0.15 0.4]);
+lf_hf_ratio = lf_power / hf_power;
+
+if lf_hf_ratio > 2.0
+    disp('High Stress');
+else
+    disp('Normal Stress');
+end</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('sparkle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particles = [];
+            const colors = ['#fbcfe8', '#f5d0fe', '#d8b4fe', '#c026d3', '#ffffff'];
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            document.addEventListener('mousemove', (e) => { for (let i = 0; i < 2; i++) particles.push(new Particle(e.clientX, e.clientY)); });
+            class Particle {
+                constructor(x, y) { this.x = x; this.y = y; this.size = Math.random() * 4 + 1; this.speedX = Math.random() * 3 - 1.5; this.speedY = Math.random() * 3 - 1.5; this.color = colors[Math.floor(Math.random() * colors.length)]; this.life = 1; }
+                update() { this.x += this.speedX; this.y += this.speedY; if (this.size > 0.1) this.size -= 0.05; this.life -= 0.02; }
+                draw() { ctx.globalAlpha = this.life; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+            }
+            function animateSparkles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); if (particles[i].size <= 0.1 || particles[i].life <= 0) { particles.splice(i, 1); i--; } }
+                requestAnimationFrame(animateSparkles);
+            }
+            animateSparkles();
+            const emojiContainer = document.getElementById('emoji-container');
+            const emojis = ['❤️', '📈', '💡', '💻', '✨'];
+            function createEmoji() { const emoji = document.createElement('div'); emoji.className = 'floating-emoji'; emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)]; emoji.style.left = `${Math.random() * 100}vw`; emoji.style.animationDuration = `${Math.random() * 10 + 10}s`; emoji.style.fontSize = `${Math.random() * 1 + 1}rem`; emojiContainer.appendChild(emoji); setTimeout(() => { emoji.remove(); }, 20000); }
+            setInterval(createEmoji, 1000);
+            const sections = document.querySelectorAll('.section-animate');
+            const sectionObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); sectionObserver.unobserve(entry.target); } }); }, { threshold: 0.1 });
+            sections.forEach(section => { sectionObserver.observe(section); });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanshi Shah | Wildlife Monitoring</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdf2f8; /* Soft pink */
+            --primary-color: #c026d3; /* Fuchsia */
+            --secondary-color: #a855f7; /* Purple */
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: #374151;
+            overflow-x: hidden;
+        }
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        #sparkle-canvas, #emoji-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
+        }
+        #emoji-container { z-index: -2; }
+        .floating-emoji {
+            position: absolute; font-size: 2rem; opacity: 0.15; animation: float-up 15s linear infinite;
+        }
+        @keyframes float-up {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .section-animate {
+            opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-animate.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+        .tech-tag {
+            background-color: #f3e8ff; /* Purple-100 */
+            color: #7e22ce; /* Purple-700 */
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="emoji-container"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <header class="bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-pacifico text-purple-600">Vanshi Shah</a>
+            <a href="ml.html" class="font-bold text-lg bg-purple-100 text-purple-700 px-6 py-2 rounded-full hover:bg-purple-200 transition">
+                &larr; Back to AI/ML
+            </a>
+        </nav>
+    </header>
+
+    <main class="py-16 px-6">
+        <section class="text-center mb-16 section-animate">
+            <h1 class="text-5xl md:text-6xl font-pacifico text-purple-600">IoT Wildlife Monitoring System</h1>
+            <p class="mt-4 text-2xl font-pacifico text-gray-800 opacity-80">Keeping an eye on nature, smartly.</p>
+        </section>
+
+        <section class="container mx-auto mb-16 section-animate">
+            <div class="content-card p-8 md:p-12 max-w-4xl mx-auto">
+                <div>
+                    <h2 class="text-3xl font-bold mb-4">Project Goal</h2>
+                    <p class="text-gray-600 mb-4">Traditional wildlife monitoring is often intrusive, inefficient, and difficult in remote habitats. This project aimed to solve that by developing an integrated IoT system that uses sensors and modern communication technologies for real-time, non-invasive wildlife tracking and analysis.</p>
+                    <p class="text-gray-600">The goal was to create a framework for collecting data on animal movements and behaviors, and then use machine learning to extract meaningful insights for conservation efforts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mx-auto mb-16 grid md:grid-cols-2 gap-10 section-animate">
+            <div class="content-card p-8">
+                <h3 class="text-2xl font-bold mb-4">My Contributions & Technical Details</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-3">
+                    <li>BLE Protocol Design: Designed a Bluetooth Low Energy (BLE) beaconing protocol with an adaptive interval control system. This approach was crucial for conserving power on the sensor devices.</li>
+                    <li>Clustering Analysis: Analyzed and applied various clustering algorithms (K-Means, GMM, DBSCAN) to the collected sensor data to automatically classify different animal mobility states, such as 'active', 'passive', or 'panic'.</li>
+                    <li>Hardware-Software Integration: Explored and implemented the integration between the sensor hardware for data acquisition and the wireless communication modules, ensuring a reliable flow of data from the field to the processing center.</li>
+                </ul>
+            </div>
+            <div class="content-card p-8">
+                 <h3 class="text-2xl font-bold mb-4">Key Outcome & Tech Stack</h3>
+                 <p class="text-gray-600 mb-4">The adaptive BLE protocol was a major success, resulting in a **battery life improvement of approximately 22%** for the monitoring devices—a critical factor for long-term deployment in the wild.</p>
+                 <div class="flex flex-wrap gap-4">
+                    <span class="tech-tag">IoT</span>
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">BLE</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Clustering Algorithms</span>
+                    <span class="tech-tag">Sensor Integration</span>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('sparkle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particles = [];
+            const colors = ['#fbcfe8', '#f5d0fe', '#d8b4fe', '#c026d3', '#ffffff'];
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            document.addEventListener('mousemove', (e) => { for (let i = 0; i < 2; i++) particles.push(new Particle(e.clientX, e.clientY)); });
+            class Particle {
+                constructor(x, y) { this.x = x; this.y = y; this.size = Math.random() * 4 + 1; this.speedX = Math.random() * 3 - 1.5; this.speedY = Math.random() * 3 - 1.5; this.color = colors[Math.floor(Math.random() * colors.length)]; this.life = 1; }
+                update() { this.x += this.speedX; this.y += this.speedY; if (this.size > 0.1) this.size -= 0.05; this.life -= 0.02; }
+                draw() { ctx.globalAlpha = this.life; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+            }
+            function animateSparkles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); if (particles[i].size <= 0.1 || particles[i].life <= 0) { particles.splice(i, 1); i--; } }
+                requestAnimationFrame(animateSparkles);
+            }
+            animateSparkles();
+            const emojiContainer = document.getElementById('emoji-container');
+            const emojis = ['🐘', '🐅', '📡', '🛰️', '📈', '✨'];
+            function createEmoji() { const emoji = document.createElement('div'); emoji.className = 'floating-emoji'; emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)]; emoji.style.left = `${Math.random() * 100}vw`; emoji.style.animationDuration = `${Math.random() * 10 + 10}s`; emoji.style.fontSize = `${Math.random() * 1 + 1}rem`; emojiContainer.appendChild(emoji); setTimeout(() => { emoji.remove(); }, 20000); }
+            setInterval(createEmoji, 1000);
+            const sections = document.querySelectorAll('.section-animate');
+            const sectionObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); sectionObserver.unobserve(entry.target); } }); }, { threshold: 0.1 });
+            sections.forEach(section => { sectionObserver.observe(section); });
+        });
+    </script>
+</body>
+</html>

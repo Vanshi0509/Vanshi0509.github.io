@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanshi Shah | Electronics Projects</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdf2f8; /* Soft pink */
+            --primary-color: #c026d3; /* Fuchsia */
+            --secondary-color: #a855f7; /* Purple */
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: #374151;
+            overflow-x: hidden;
+        }
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        #sparkle-canvas, #emoji-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
+        }
+        #emoji-container { z-index: -2; }
+        .floating-emoji {
+            position: absolute; font-size: 2rem; opacity: 0.15; animation: float-up 15s linear infinite;
+        }
+        @keyframes float-up {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+        .project-card {
+            background-color: white; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-10px); box-shadow: 0 20px 30px -10px rgba(168, 85, 247, 0.2);
+        }
+        .section-animate {
+            opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-animate.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="emoji-container"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <header class="bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-pacifico text-purple-600">Vanshi Shah</a>
+            <a href="index.html#electronics" class="font-bold text-lg bg-purple-100 text-purple-700 px-6 py-2 rounded-full hover:bg-purple-200 transition">
+                &larr; Back to Home
+            </a>
+        </nav>
+    </header>
+
+    <main class="py-16 px-6">
+        <section class="text-center mb-20 section-animate">
+            <h1 class="text-6xl font-pacifico text-purple-600">Electronics Playground</h1>
+            <p class="mt-4 text-2xl font-pacifico text-gray-800 opacity-80">Where circuits, code, and creativity collide.</p>
+        </section>
+
+        <section class="container mx-auto mb-20 section-animate">
+            <h2 class="text-4xl font-pacifico text-center text-fuchsia-600 mb-12">Featured Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
+
+                <div class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">⚙️</div>
+                    <h3 class="text-2xl font-bold mb-3">5-stage Pipelined RISC Processor</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Designed a 5-stage pipelined RISC processor in Verilog, implementing hazard detection and data forwarding to optimize throughput.</p>
+                    <a href="project-riscv.html" class="font-bold text-purple-600 hover:text-fuchsia-600 transition mt-auto">View Details &rarr;</a>
+                </div>
+
+                <div class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🧠</div>
+                    <h3 class="text-2xl font-bold mb-3">Neural Networks on FPGA</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">An ongoing project to implement a feed-forward neural network on an FPGA, focusing on pipelining and custom IP core design.</p>
+                    <a href="project-fpga.html" class="font-bold text-purple-600 hover:text-fuchsia-600 transition mt-auto">View Details &rarr;</a>
+                </div>
+
+                <div class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">⚡️</div>
+                    <h3 class="text-2xl font-bold mb-3">HFT on FPGA (Planned)</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">A planned exploration into building ultra-low-latency High-Frequency Trading systems using FPGAs for hardware acceleration.</p>
+                    <a href="project-hft.html" class="font-bold text-purple-600 hover:text-fuchsia-600 transition mt-auto">View Details &rarr;</a>
+                </div>
+                
+                <div class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold mb-3">Cardiac Stress Detection System</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Developed a multi-modal system fusing ECG, HRV, and PPG signals, improving stress classification accuracy to over 90%.</p>
+                    <a href="project-cardiac.html" class="font-bold text-purple-600 hover:text-fuchsia-600 transition mt-auto">View Details &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mx-auto mb-20 section-animate">
+            <h2 class="text-4xl font-pacifico text-center text-fuchsia-600 mb-12">Internship Experience</h2>
+            <div class="max-w-2xl mx-auto">
+                <div class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">🔬</div>
+                    <h3 class="text-2xl font-bold mb-3">Embedded Systems @ Edhaa Innovations</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Engineered a data pipeline for multi-sensor data from early IoT diagnostic hardware prototypes, improving diagnostic accuracy to 98.3% by developing and applying predictive analytics to sensor and image data. Architected a baseline dataset and inference framework for future devices.</p>
+                    <p class="text-xs text-gray-400 mt-4 italic">Further details are protected under an NDA.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mx-auto text-center section-animate">
+             <h2 class="text-4xl font-pacifico text-center text-fuchsia-600 mb-12">Code & Solutions</h2>
+             <div class="max-w-2xl mx-auto">
+                <a href="hdlbits.html" class="project-card p-8 flex flex-col items-center text-center">
+                    <div class="text-5xl mb-4">💻</div>
+                    <h3 class="text-2xl font-bold mb-3">HDLBits Solutions</h3>
+                    <p class="text-gray-600 mb-6 flex-grow">Solutions to be uploaded soon!</p>
+                    <span class="font-bold text-purple-600 hover:text-fuchsia-600 transition">Explore Solutions &rarr;</span>
+                </a>
+             </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('sparkle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particles = [];
+            const colors = ['#fbcfe8', '#f5d0fe', '#d8b4fe', '#c026d3', '#ffffff'];
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            document.addEventListener('mousemove', (e) => { for (let i = 0; i < 2; i++) particles.push(new Particle(e.clientX, e.clientY)); });
+            class Particle {
+                constructor(x, y) { this.x = x; this.y = y; this.size = Math.random() * 4 + 1; this.speedX = Math.random() * 3 - 1.5; this.speedY = Math.random() * 3 - 1.5; this.color = colors[Math.floor(Math.random() * colors.length)]; this.life = 1; }
+                update() { this.x += this.speedX; this.y += this.speedY; if (this.size > 0.1) this.size -= 0.05; this.life -= 0.02; }
+                draw() { ctx.globalAlpha = this.life; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+            }
+            function animateSparkles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); if (particles[i].size <= 0.1 || particles[i].life <= 0) { particles.splice(i, 1); i--; } }
+                requestAnimationFrame(animateSparkles);
+            }
+            animateSparkles();
+            const emojiContainer = document.getElementById('emoji-container');
+            const emojis = ['🛠️', '⚙️', '💡', '🧠', '❤️', '✨'];
+            function createEmoji() { const emoji = document.createElement('div'); emoji.className = 'floating-emoji'; emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)]; emoji.style.left = `${Math.random() * 100}vw`; emoji.style.animationDuration = `${Math.random() * 10 + 10}s`; emoji.style.fontSize = `${Math.random() * 1 + 1}rem`; emojiContainer.appendChild(emoji); setTimeout(() => { emoji.remove(); }, 20000); }
+            setInterval(createEmoji, 1000);
+            const sections = document.querySelectorAll('.section-animate');
+            const sectionObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); sectionObserver.unobserve(entry.target); } }); }, { threshold: 0.1 });
+            sections.forEach(section => { sectionObserver.observe(section); });
+        });
+    </script>
+</body>
+</html>

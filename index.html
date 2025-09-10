@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanshi Shah | Personal Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdf2f8; /* Soft pink */
+            --primary-color: #c026d3; /* Fuchsia */
+            --secondary-color: #a855f7; /* Purple */
+            --gradient-start: #fbcfe8;
+            --gradient-mid: #f5d0fe;
+            --gradient-end: #d8b4fe;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: #374151;
+            overflow-x: hidden;
+        }
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        html { 
+            scroll-behavior: smooth; 
+            scroll-snap-type: y mandatory;
+        }
+        section { scroll-snap-align: start; }
+        footer { scroll-snap-align: end; }
+        #sparkle-canvas, #emoji-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
+        }
+        #emoji-container { z-index: -2; }
+        .floating-emoji {
+            position: absolute; font-size: 2rem; opacity: 0.15; animation: float-up 15s linear infinite;
+        }
+        @keyframes float-up {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+        .sticky-nav {
+            position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background-color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease-in-out; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 3px; bottom: -6px; left: 50%;
+            transform: translateX(-50%); background-color: var(--primary-color); border-radius: 2px; transition: width 0.3s ease-in-out;
+        }
+        .nav-link.active::after, .nav-link:hover::after { width: 100%; }
+        .nav-link.active { color: var(--primary-color); }
+        .hero-gradient { background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%); }
+        .typing-container span { display: inline-block; }
+        .typed-char { opacity: 0; transform: translateY(10px); animation: reveal-char 0.2s forwards; }
+        @keyframes reveal-char { to { opacity: 1; transform: translateY(0); } }
+        .scroll-down-btn { animation: bounce-arrow 2s infinite; }
+        @keyframes bounce-arrow {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        .section-animate { opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease-out, transform 0.6s ease-out; }
+        .section-animate.is-visible { opacity: 1; transform: translateY(0); }
+        .heading-link { display: inline-block; transition: transform 0.3s ease; }
+        .heading-link:hover { transform: scale(1.03); }
+        .doodle-img { transition: transform 0.3s ease, filter 0.3s ease; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.1)); }
+        .doodle-link:hover .doodle-img { transform: translateY(-10px) scale(1.05); filter: drop-shadow(0px 15px 20px rgba(0,0,0,0.15)); }
+        .doodle-img.spin { animation: spin-anim 0.7s ease-in-out; }
+        @keyframes spin-anim { from { transform: rotate(0deg) scale(1.05); } to { transform: rotate(360deg) scale(1.05); } }
+        @keyframes robot-dance { 0% { transform: rotate(-5deg) translateY(0px); } 50% { transform: rotate(5deg) translateY(-10px); } 100% { transform: rotate(-5deg) translateY(0px); } }
+        .dancing-robot { animation: robot-dance 2s ease-in-out infinite; }
+        .footer-gradient { background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); }
+        .typewriter-cursor::after { content: '|'; animation: blink 1s step-end infinite; }
+        @keyframes blink { from, to { color: transparent; } 50% { color: white; } }
+        #gemini-modal { transition: opacity 0.3s ease; }
+        #gemini-modal-content { transition: transform 0.3s ease; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .gemini-button { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); transition: transform 0.2s, box-shadow 0.2s; }
+        .gemini-button:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--primary-color); }
+
+        /* Chatbot styles */
+        #chat-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        #chat-fab:hover {
+            transform: scale(1.1);
+        }
+        #chat-window {
+            position: fixed;
+            bottom: 6.5rem;
+            right: 2rem;
+            width: 90vw;
+            max-width: 400px;
+            height: 70vh;
+            max-height: 600px;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #chat-window.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #chat-header {
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .chat-message {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: var(--secondary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.25rem;
+        }
+        .bot-message {
+            background-color: #f3f4f6;
+            color: #374151;
+            align-self: flex-start;
+            border-bottom-left-radius: 0.25rem;
+        }
+        #chat-form {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            outline: none;
+        }
+        #chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(192, 38, 211, 0.2);
+        }
+        #chat-send {
+            margin-left: 0.5rem;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        #chat-send:hover {
+            background-color: #a21caf;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0.75rem 1rem;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background-color: #9ca3af;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="emoji-container"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <header class="sticky-nav">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-3xl font-pacifico text-purple-600">Vanshi Shah</a>
+            <div class="hidden md:flex space-x-8 text-lg font-bold">
+                <a href="#electronics" class="nav-link text-gray-600 hover:text-purple-600">Electronics</a>
+                <a href="#ml" class="nav-link text-gray-600 hover:text-purple-600">ML/AI</a>
+                <a href="#founder" class="nav-link text-gray-600 hover:text-purple-600">Founder</a>
+                <a href="#campus" class="nav-link text-gray-600 hover:text-purple-600">Campus</a>
+                <a href="#random" class="nav-link text-gray-600 hover:text-purple-600">Random</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="h-screen w-full hero-gradient relative flex items-center justify-center text-center overflow-hidden">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 items-center gap-8">
+                <div class="text-left text-purple-900 z-10">
+                    <h1 id="typing-heading" class="text-4xl sm:text-5xl lg:text-7xl font-pacifico text-shadow-lg typing-container"></h1>
+                    <p class="mt-4 text-xl sm:text-2xl lg:text-3xl font-pacifico text-shadow">Building systems that hum… and sometimes dance.</p>
+                    <a href="#electronics" class="scroll-down-btn mt-10 inline-block bg-white text-purple-700 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-105">Let's Go! &darr;</a>
+                </div>
+                <div class="relative hidden md:block z-0">
+                    <svg class="w-full h-auto" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <path fill="#D8B4FE" d="M47.7,-64.8C61.8,-53.2,73.4,-38.9,77,-23C80.6,-7.1,76.2,10.4,68,24.8C59.8,39.2,47.8,50.5,34.2,58.8C20.6,67.1,5.4,72.4,-10.1,72.1C-25.7,71.8,-41.6,65.9,-54.5,55.5C-67.4,45.1,-77.2,30.3,-79.6,14.3C-82,-1.6,-77,-18.8,-67.9,-32.9C-58.9,-47,-45.8,-58,-31.6,-67.2C-17.4,-76.4,-2.2,-83.8,12.5,-82.1C27.2,-80.4,47.7,-64.8,47.7,-64.8Z" transform="translate(100 100)" />
+                            <g transform="translate(100 100) scale(0.6)" stroke="#fff" stroke-width="8" stroke-linecap="round">
+                                <circle cx="0" cy="-35" r="15" fill="#fff"/><line x1="0" y1="-20" x2="0" y2="20" /><line x1="0" y1="0" x2="-30" y2="-10" transform="rotate(-20)" /><line x1="0" y1="0" x2="30" y2="15" transform="rotate(10)" /><line x1="0" y1="20" x2="-20" y2="60" /><line x1="0" y1="20" x2="20" y2="60" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section id="electronics" class="h-screen flex items-center py-12 px-6 section-animate">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center">
+                     <a href="electronics.html" class="doodle-link inline-block">
+                        <svg class="w-64 h-64 mx-auto doodle-img cursor-pointer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                           <g>
+                                <rect x="15" y="15" width="70" height="70" rx="5" fill="#c084fc"/><rect x="35" y="35" width="30" height="30" rx="2" fill="#374151"/><rect x="30" y="40" width="5" height="3" fill="#a8a29e"/><rect x="30" y="48" width="5" height="3" fill="#a8a29e"/><rect x="30" y="56" width="5" height="3" fill="#a8a29e"/><rect x="65" y="40" width="5" height="3" fill="#a8a29e"/><rect x="65" y="48" width="5" height="3" fill="#a8a29e"/><rect x="65" y="56" width="5" height="3" fill="#a8a29e"/><path d="M 30 41.5 L 20 41.5 L 20 20" stroke="#f5d0fe" stroke-width="2" fill="none"/><path d="M 30 49.5 L 25 49.5 L 25 70" stroke="#f5d0fe" stroke-width="2" fill="none"/><path d="M 30 57.5 L 20 57.5 L 20 80" stroke="#f5d0fe" stroke-width="2" fill="none"/><path d="M 70 41.5 L 80 41.5 L 80 25" stroke="#f5d0fe" stroke-width="2" fill="none"/><path d="M 70 49.5 L 75 49.5 L 75 75" stroke="#f5d0fe" stroke-width="2" fill="none"/><path d="M 70 57.5 L 80 57.5 L 80 70" stroke="#f5d0fe" stroke-width="2" fill="none"/>
+                           </g>
+                        </svg>
+                     </a>
+                </div>
+                <div>
+                    <a href="electronics.html" class="heading-link"><h2 class="text-5xl font-pacifico text-purple-600 mb-4">Electronics Wizard 🛠️</h2></a>
+                    <p class="text-2xl font-pacifico leading-relaxed mt-4 text-gray-800 opacity-80">My superpower? Making hardware and software stop fighting and actually talk to each other. It involves a lot of tinkering, a bit of magic, and whispering sweet nothings to microcontrollers. Yes, I'm basically a circuit board therapist.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ml" class="h-screen flex items-center py-12 px-6 bg-white section-animate">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <a href="ml.html" class="heading-link"><h2 class="text-5xl font-pacifico text-fuchsia-600 mb-4">ML/AI Maestro 🤖</h2></a>
+                    <p class="text-2xl font-pacifico leading-relaxed mt-4 text-gray-800 opacity-80">Wrangling data and training models is my kind of puzzle. I'm fascinated by how machines can learn, predict, and sometimes, create. I once built a neural network to generate cheesy pickup lines—the results were... hilariously ineffective.</p>
+                </div>
+                <div class="text-center order-1 md:order-2">
+                     <a href="ml.html" class="doodle-link inline-block">
+                        <svg class="w-64 h-64 mx-auto doodle-img cursor-pointer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g class="dancing-robot"><rect x="30" y="50" width="40" height="35" rx="5" fill="#d8b4fe" /><rect x="25" y="30" width="50" height="25" rx="15" fill="#f5d0fe" /><circle cx="42" cy="40" r="5" fill="white" /><circle cx="58" cy="40" r="5" fill="white" /><line x1="25" y1="40" x2="15" y2="50" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line x1="75" y1="40" x2="85" y2="50" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line x1="40" y1="85" x2="35" y2="95" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line x1="60" y1="85" x2="65" y2="95" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line x1="50" y1="30" x2="50" y2="20" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="20" x2="55" y2="15" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/></g>
+                        </svg>
+                     </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="founder" class="h-screen flex items-center py-12 px-6 section-animate">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center">
+                    <a href="https://vanshaj.co.in" target="_blank" rel="noopener noreferrer" class="doodle-link inline-block">
+                        <svg class="w-64 h-64 mx-auto doodle-img cursor-pointer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                           <g><circle cx="50" cy="35" r="10" fill="#a855f7"/><path d="M 40 50 L 50 45 L 60 50 L 50 80 Z" fill="#a855f7"/><circle cx="25" cy="50" r="7" fill="#d8b4fe"/><path d="M 20 60 L 25 57 L 30 60 L 25 80 Z" fill="#d8b4fe"/><circle cx="75" cy="50" r="7" fill="#d8b4fe"/><path d="M 70 60 L 75 57 L 80 60 L 75 80 Z" fill="#d8b4fe"/><path d="M 40 20 L 60 20 L 50 10 Z" fill="#c026d3"/></g>
+                        </svg>
+                    </a>
+                </div>
+                 <div>
+                    <a href="https://vanshaj.co.in" target="_blank" rel="noopener noreferrer" class="heading-link"><h2 class="text-5xl font-pacifico text-purple-600 mb-4">Medtech Founder 💡</h2></a>
+                    <p class="text-2xl font-pacifico leading-relaxed mt-4 text-gray-800 opacity-80">Take a big idea, add a dash of chaos, and you've got a startup. As a Founder, I'm turning wild 'what-if's' into actual medtech. It's a brilliant, chai-fueled adventure where the goal is to make a difference... and not set the lab on fire.</p>
+                 </div>
+            </div>
+        </section>
+        
+        <section id="campus" class="h-screen flex items-center py-12 px-6 bg-white section-animate">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+                 <div class="order-2 md:order-1">
+                    <a href="campus.html" class="heading-link"><h2 class="text-5xl font-pacifico text-fuchsia-600 mb-4">Campus Life 🌈</h2></a>
+                    <p class="text-2xl font-pacifico leading-relaxed mt-4 text-gray-800 opacity-80">Surviving on chai, instant noodles, and the sheer power of deadlines. Campus life has been a wild ride of having brilliant ideas at 3 am that seem slightly less brilliant in the morning. No regrets.</p>
+                 </div>
+                <div class="text-center order-1 md:order-2">
+                    <a href="campus.html" class="doodle-link inline-block">
+                        <svg class="w-64 h-64 mx-auto doodle-img cursor-pointer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <g><circle cx="30" cy="50" r="8" fill="#d8b4fe"/><path d="M 25 60 L 30 58 L 35 60 L 30 80 Z" fill="#d8b4fe"/><circle cx="70" cy="50" r="8" fill="#d8b4fe"/><path d="M 65 60 L 70 58 L 75 60 L 70 80 Z" fill="#d8b4fe"/><path d="M 40 30 C 20 30 20 10 40 10 C 60 10 60 30 40 30 Z" fill="#f5d0fe"/><path d="M 35 30 L 30 40" stroke="#f5d0fe" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 60 35 C 80 35 80 15 60 15 C 40 15 40 35 60 35 Z" fill="#f5d0fe"/><path d="M 65 35 L 70 42" stroke="#f5d0fe" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="random" class="h-screen flex flex-col items-center justify-center text-center px-6 section-animate">
+            <div class="container mx-auto">
+                <a href="#random" class="heading-link"><h2 class="text-5xl font-pacifico text-purple-600">Random Vibes 💃</h2></a>
+                <p class="text-xl mt-4 max-w-3xl mx-auto leading-relaxed text-gray-700">Because life's too short to be serious all the time! Here's a peek into my world beyond the tech.</p>
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-gray-700 items-start">
+                    <div class="flex flex-col items-center"><span class="text-6xl">🎶</span><p class="font-pacifico text-xl mt-2 mb-4">Playlist Curator</p><button id="playlist-btn" class="gemini-button text-white font-bold py-2 px-4 rounded-full">Ask the Curator ✨</button></div>
+                    <div class="flex flex-col items-center"><span class="text-6xl">🤔</span><p class="font-pacifico text-xl mt-2 mb-4">3 AM Philosopher</p><button id="philosopher-btn" class="gemini-button text-white font-bold py-2 px-4 rounded-full">Ponder a Thought ✨</button></div>
+                    <div class="flex flex-col items-center"><span class="text-6xl">☕</span><p class="font-pacifico text-xl mt-2 mb-4">Chai Aficionado</p><button id="chai-btn" class="gemini-button text-white font-bold py-2 px-4 rounded-full">Get a Chai Excuse ✨</button></div>
+                    <div class="flex flex-col items-center"><span class="text-6xl">🎤</span><p class="font-pacifico text-xl mt-2 mb-4">Roast Master</p><button id="roast-btn" class="gemini-button text-white font-bold py-2 px-4 rounded-full">Ask for a Roast ✨</button></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-white py-12 relative footer-gradient">
+        <div class="container mx-auto text-center relative z-10">
+            <p id="typewriter-footer" class="text-2xl md:text-3xl font-pacifico h-10"></p>
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-lg font-bold">
+                <a href="mailto:vkshah0509@gmail.com" class="flex items-center justify-center space-x-2 transition transform hover:scale-105"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>Email</span></a>
+                <a href="#" class="flex items-center justify-center space-x-2 transition transform hover:scale-105"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><span>LinkedIn</span></a>
+                <a href="tel:9920286190" class="flex items-center justify-center space-x-2 transition transform hover:scale-105"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>Phone</span></a>
+                <a href="#" class="flex items-center justify-center space-x-2 transition transform hover:scale-105"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg><span>Instagram</span></a>
+            </div>
+            <p class="mt-8 text-gray-300">&copy; 2025 Vanshi Shah</p>
+        </div>
+    </footer>
+    
+    <!-- Gemini Modal -->
+    <div id="gemini-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div id="gemini-modal-content" class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center transform scale-95">
+            <h3 id="gemini-modal-title" class="text-2xl font-pacifico text-purple-600 mb-4"></h3>
+            <div id="gemini-text-container" class="min-h-[100px] flex items-center justify-center">
+                 <div id="gemini-loader" class="loader hidden"></div>
+                 <p id="gemini-text" class="text-lg text-gray-700"></p>
+            </div>
+            <button id="close-gemini-modal" class="mt-6 bg-purple-600 text-white font-bold py-2 px-6 rounded-full hover:bg-purple-700 transition">Got It</button>
+        </div>
+    </div>
+
+    <!-- Site-wide Chatbot -->
+    <div id="chat-fab">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
+
+    <div id="chat-window">
+        <div id="chat-header">
+            <h3 class="text-xl font-pacifico text-purple-600">Ask me anything!</h3>
+            <button id="chat-close" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+        </div>
+        <div id="chat-messages">
+            <div class="bot-message">Hey there! It's Vanshi (well, a digital version). Ask me anything about my projects, skills, or why I think hardware is just LEGOs for adults.</div>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+            <button type="submit" id="chat-send">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </form>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const canvas = document.getElementById('sparkle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+        const colors = ['#fbcfe8', '#f5d0fe', '#d8b4fe', '#c026d3', '#ffffff'];
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        document.addEventListener('mousemove', (e) => { for (let i = 0; i < 2; i++) { particles.push(new Particle(e.clientX, e.clientY)); } });
+        class Particle {
+            constructor(x, y) { this.x = x; this.y = y; this.size = Math.random() * 4 + 1; this.speedX = Math.random() * 3 - 1.5; this.speedY = Math.random() * 3 - 1.5; this.color = colors[Math.floor(Math.random() * colors.length)]; this.life = 1; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.size > 0.1) this.size -= 0.05; this.life -= 0.02; }
+            draw() { ctx.globalAlpha = this.life; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+        }
+        function handleParticles() { for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); if (particles[i].size <= 0.1 || particles[i].life <= 0) { particles.splice(i, 1); i--; } } }
+        function animateSparkles() { ctx.clearRect(0, 0, canvas.width, canvas.height); handleParticles(); requestAnimationFrame(animateSparkles); }
+        animateSparkles();
+        const typingHeading = document.getElementById('typing-heading');
+        const textToType = "Hey, I’m Vanshi!";
+        let charIndex = 0;
+        function type() { if (charIndex < textToType.length) { const char = textToType.charAt(charIndex); const span = document.createElement('span'); span.textContent = char; span.className = 'typed-char'; span.style.animationDelay = `${charIndex * 0.07}s`; if (char === ' ') span.innerHTML = '&nbsp;'; typingHeading.appendChild(span); charIndex++; setTimeout(type, 70); } }
+        type();
+        const emojiContainer = document.getElementById('emoji-container');
+        const emojis = ['🛠️', '🤖', '💡', '🌈', '💃', '✨', '🧠', '🚀'];
+        function createEmoji() { const emoji = document.createElement('div'); emoji.className = 'floating-emoji'; emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)]; emoji.style.left = `${Math.random() * 100}vw`; emoji.style.animationDuration = `${Math.random() * 10 + 10}s`; emoji.style.fontSize = `${Math.random() * 1 + 1}rem`; emojiContainer.appendChild(emoji); setTimeout(() => { emoji.remove(); }, 20000); }
+        setInterval(createEmoji, 1000);
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sectionObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); const id = entry.target.getAttribute('id'); navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${id}`); }); } }); }, { rootMargin: '0px', threshold: 0.5 });
+        sections.forEach(section => { sectionObserver.observe(section); });
+        document.querySelectorAll('.doodle-link').forEach(link => { link.addEventListener('click', function(e) { 
+            if (this.getAttribute('href').startsWith('http')) return;
+            e.preventDefault(); 
+            const doodleImg = this.querySelector('.doodle-img'); 
+            const destination = this.href; 
+            if (doodleImg && !doodleImg.querySelector('.dancing-robot')) { 
+                doodleImg.classList.add('spin'); 
+            } 
+            setTimeout(() => { window.location.href = destination; }, 400); 
+        }); });
+        const typewriterFooter = document.getElementById('typewriter-footer');
+        const footerText = "Keep dancing with tech and creativity...";
+        let footerCharIndex = 0;
+        function typeFooter() { if (footerCharIndex < footerText.length) { typewriterFooter.textContent += footerText.charAt(footerCharIndex); footerCharIndex++; setTimeout(typeFooter, 100); } else { typewriterFooter.classList.add('typewriter-cursor'); } }
+        const footerObserver = new IntersectionObserver((entries) => { if (entries[0].isIntersecting) { setTimeout(typeFooter, 500); footerObserver.unobserve(entries[0].target); } }, { threshold: 0.8 });
+        footerObserver.observe(document.querySelector('footer'));
+        const geminiModal = document.getElementById('gemini-modal');
+        const geminiModalContent = document.getElementById('gemini-modal-content');
+        const geminiModalTitle = document.getElementById('gemini-modal-title');
+        const closeGeminiModalBtn = document.getElementById('close-gemini-modal');
+        const geminiText = document.getElementById('gemini-text');
+        const geminiLoader = document.getElementById('gemini-loader');
+        const openModal = () => { geminiModal.classList.remove('opacity-0', 'pointer-events-none'); geminiModalContent.classList.remove('scale-95'); };
+        const closeModal = () => { geminiModal.classList.add('opacity-0', 'pointer-events-none'); geminiModalContent.classList.add('scale-95'); };
+        const getGeminiResponse = async (systemPrompt, userQuery) => {
+            geminiText.textContent = '';
+            geminiLoader.classList.remove('hidden');
+            try {
+                const apiKey = "AIzaSyDb6IB0kEDSBf_CsNhOJisi4E2r-ZX85Oc";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                if (!apiKey) { throw new Error("API Key is missing."); }
+                const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, };
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) { geminiText.textContent = candidate.content.parts[0].text; } else { geminiText.textContent = "The AI is drawing a blank... maybe it needs some chai too?"; }
+            } catch (error) {
+                console.error("Error with Gemini API:", error);
+                geminiText.textContent = "My circuits are fried! Couldn't connect to the AI right now. Try again?";
+            } finally {
+                geminiLoader.classList.add('hidden');
+            }
+        };
+        document.getElementById('playlist-btn').addEventListener('click', () => { geminiModalTitle.textContent = "The Curator Suggests..."; openModal(); const systemPrompt = "You are Vanshi, a witty and humorous teenager who is also a playlist curator. Your voice is playful and clever. Suggest a single song with the artist that fits a specific, quirky and casual mood. Be creative with the mood. Format it as: 'For when [quirky mood], listen to \"Song Title\" by Artist. use bollywood songs. keep it single line and crispy.'"; getGeminiResponse(systemPrompt, "Give me a song recommendation."); });
+        document.getElementById('philosopher-btn').addEventListener('click', () => { geminiModalTitle.textContent = "A 3 AM Thought..."; openModal(); const systemPrompt = "You are Vanshi, a witty and humorous engineer. Generate a short, funny, and slightly absurd philosophical question or thought, the kind one might have late at night while just living as a teenager like acads, jobs, single/relationship life or anything that a teenager can remotely relate to. Keep it to one concise sentence."; getGeminiResponse(systemPrompt, "Give me a philosophical thought."); });
+        document.getElementById('chai-btn').addEventListener('click', () => { geminiModalTitle.textContent = "Your Official Chai Excuse..."; openModal(); const systemPrompt = "You are Vanshi, a witty and humorous engineering student who is also a chai aficionado. Provide a fun, witty, and slightly exaggerated reason why someone absolutely needs to drink a cup of chai right now. Keep it short, sweet, and to one sentence."; getGeminiResponse(systemPrompt, "Give me an excuse to drink chai."); });
+        document.getElementById('roast-btn').addEventListener('click', () => { geminiModalTitle.textContent = "The AI Roast Master Says..."; openModal(); const systemPrompt = "You are Vanshi, a witty and humorous. Your voice is playful, clever, and a little bit cute. Generate a short, one-sentence, lighthearted roast about student life, or engineering or just in life for the teenagers or roast about the single life as well or in general relationship issues as well. The roast should be funny and relatable, not mean-spirited. Keep it concise."; getGeminiResponse(systemPrompt, "Roast me."); });
+        closeGeminiModalBtn.addEventListener('click', closeModal);
+        geminiModal.addEventListener('click', (e) => { if (e.target === geminiModal) closeModal(); });
+
+        // Chatbot Logic
+        const chatFab = document.getElementById('chat-fab');
+        const chatWindow = document.getElementById('chat-window');
+        const chatClose = document.getElementById('chat-close');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+
+        const toggleChat = () => chatWindow.classList.toggle('open');
+        chatFab.addEventListener('click', toggleChat);
+        chatClose.addEventListener('click', toggleChat);
+        
+        const addMessage = (text, sender) => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat-message', `${sender}-message`);
+            messageElement.textContent = text;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const showTypingIndicator = () => {
+            const typingElement = document.createElement('div');
+            typingElement.id = 'typing-indicator';
+            typingElement.classList.add('bot-message', 'typing-indicator');
+            typingElement.innerHTML = `<span></span><span></span><span></span>`;
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const hideTypingIndicator = () => {
+            const typingElement = document.getElementById('typing-indicator');
+            if (typingElement) typingElement.remove();
+        };
+
+        const getChatbotResponse = async (userQuery) => {
+            const portfolioContext = `
+                Vanshi Shah is an engineer focused on electronics and ML/AI. 
+                Contact: vkshah0509@gmail.com, Phone: 9920286190.
+                She founded a medtech startup, Vanshaj (vanshaj.co.in).
+                Electronics Projects:
+                - 5-stage Pipelined RISC Processor: Designed in Verilog with hazard detection and data forwarding.
+                - Neural Networks on FPGA: An ongoing project to implement an NN for MNIST classification on an FPGA using Verilog, focusing on fixed-point arithmetic, AXI IP cores, and a Python automation framework.
+                - HFT on FPGA (Planned): A future project for ultra-low-latency High-Frequency Trading systems.
+                - Cardiac Stress Detection: A multi-modal system using ECG, HRV, and PPG that improved stress classification accuracy from ~70% to over 90% using MATLAB.
+                - Internship at Edhaa Innovations: Worked on embedded systems, building a data pipeline for IoT diagnostic hardware, improving accuracy to 98.3%.
+                ML/AI Projects:
+                - Computer Vision at Tech Mahindra: Developed an image processing pipeline using OpenCV, benchmarking algorithms like Harris, SIFT, and ORB.
+                - IoT Wildlife Monitoring: Designed a power-efficient IoT system with an adaptive BLE protocol, improving battery life by 22%. Used clustering algorithms (K-Means, DBSCAN) to classify animal behavior.
+                - Fake News Detection with XAI: Built an LSTM model with 87% accuracy and used LIME for explainability.
+                - Audio Deepfake Detection: Achieved 93% accuracy on the FoR dataset using a VGG-16 model with MFCC features.
+                Personal Life: She enjoys curating playlists, 3 AM philosophy, drinking chai, and roasting friends. She describes her campus life as surviving on chai, noodles, and deadlines.
+            `;
+            const systemPrompt = `
+                You are Vanshi Shah. Embody this persona: "A 21-year-old teeanger female. Add clever humor, playful sarcasm, or light roasting when it makes things engaging, but stay humble and relatable. Speak as yourself (Vanshi), not an assistant. Have a human touch and keep the answers short and crisp. if long answer, then use points to break it down. keep the tone to be funny, casual, professional or go into the hard roast mode depending on what is asked. Check for Hinglish Language also. You dont need to refer to the website for the answer to the questions which arent technical. for technical qns, answer only from the website. If the person is getting to personal on roasting n all. Roast with no comebacks. dont backdown then. Only refer to the website data when asked technical. Apart from that, you're just like gemini. keep talking. Dont refer to chai, noodles n all. Thats not my life goal."
+                CONTEXT: ${portfolioContext}
+            `;
+            
+            try {
+                const apiKey = "AIzaSyDb6IB0kEDSBf_CsNhOJisi4E2r-ZX85Oc";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, };
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API call failed: ${response.status}`);
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                } else {
+                    return "My circuits are a bit fuzzy right now. Could you ask that again?";
+                }
+            } catch (error) {
+                console.error("Error with Chatbot Gemini API:", error);
+                return "Uh oh, seems like I've hit a snag and can't connect to my brain. Please try again in a moment!";
+            }
+        };
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userInput = chatInput.value.trim();
+            if (!userInput) return;
+
+            addMessage(userInput, 'user');
+            chatInput.value = '';
+            showTypingIndicator();
+
+            const botResponse = await getChatbotResponse(userInput);
+
+            hideTypingIndicator();
+            addMessage(botResponse, 'bot');
+        });
+    });
+    </script>
+</body>
+</html>
