@@ -445,7 +445,7 @@
             geminiText.textContent = '';
             geminiLoader.classList.remove('hidden');
             try {
-                const apiKey = "AIzaSyDb6IB0kEDSBf_CsNhOJisi4E2r-ZX85Oc";
+                const apiKey = "AIzaSyAD1rs-TYzaIiF9sAhym5YY-QZCOdIPkms";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 if (!apiKey) { throw new Error("API Key is missing."); }
                 const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, };
@@ -563,3 +563,4 @@
 </body>
 
 </html>
+
